@@ -14,9 +14,10 @@ namespace GraphQL_Demo.GraphLayer
         /// </summary>
         /// <param name="studentRepository">Student repository that manages students.</param>
         /// <param name="courseRepository">Course repository that manages courses.</param>
-        public GraphSchema(IStudentRepository studentRepository, ICourseRepository courseRepository) 
-        { 
+        public GraphSchema(IStudentRepository studentRepository, ICourseRepository courseRepository)
+        {
             Query = new GraphQuery(studentRepository, courseRepository);
+            Mutation = new GraphMutation(studentRepository, courseRepository);
         }
     }
 }

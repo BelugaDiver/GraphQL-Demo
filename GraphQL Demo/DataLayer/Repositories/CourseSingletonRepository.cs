@@ -1,5 +1,5 @@
-﻿using GraphQL_Demo.DataLayer.Model;
-using GraphQL_Demo.DataLayer.Interfaces;
+﻿using GraphQL_Demo.DataLayer.Interfaces;
+using GraphQL_Demo.DataLayer.Model;
 
 namespace GraphQL_Demo.DataLayer.Repositories
 {
@@ -29,19 +29,22 @@ namespace GraphQL_Demo.DataLayer.Repositories
         /// <returns>The singleton student.</returns>
         public static CourseSingletonRepository GetSingleton(IEnumerable<Course> courses = null)
         {
-            if (_instance == null)
+            lock (_lock)
             {
-                lock (_lock)
+                if (_instance == null)
                 {
-                    if (_instance == null)
+                    lock (_lock)
                     {
-                        _instance = new CourseSingletonRepository();
-                        _instance._courses = courses?.ToList() ?? new List<Course>();
+                        if (_instance == null)
+                        {
+                            _instance = new CourseSingletonRepository();
+                            _instance._courses = courses?.ToList() ?? new List<Course>();
+                        }
                     }
                 }
-            }
 
-            return _instance;
+                return _instance;
+            }
         }
 
         public Course Add(Course entity)
